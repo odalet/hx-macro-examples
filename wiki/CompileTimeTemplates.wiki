@@ -106,7 +106,7 @@ This is exactly what we need here. If we use @:autoBuild on our ICTemplate inter
 }
 }}}
 
-At this sage, ICTemplate is already finished and there is no need for further modifications for what we want to do. The parameter of @:autoBuild is actually a (macro) function call. The corresponding function does not yet exist, so here's the remedy:
+At this stage, ICTemplate is already finished and there is no need for further modifications for what we want to do. The parameter of @:autoBuild is actually a (macro) function call. The corresponding function does not yet exist, so here's the remedy:
 
 {{{
 class Ctt 
@@ -127,7 +127,7 @@ Either way, we now have an entry point. Consider _build_ just like _main_, i.e. 
 
 I find it difficult to generally describe what a context is, especially because haxe.macro.Context provides, among truly contextual method, some general utility methods. When using @:build or @:autoBuild, the context is basically the type that is currently built. For our concrete example, consider the context to be our UserTemplate class.
 
-With that mindset, explaining the first line of above _build_ method is possible. Context.getBuildFields() returns all fields of the type that is in our current context, i.e. the fields of UserTemplate in our example. If we were to put _trace(fields)_ there, it would print the definition of our UserTemplate's constructor "new", which is the only method it currently has.
+With that mindset, explaining the first line of above _build_ method is possible. _Context.getBuildFields_ returns all fields of the type that is in our current context, i.e. the fields of UserTemplate in our example. If we were to put _trace(fields)_ there, it would print the definition of our UserTemplate's constructor "new", which is the only field it currently has.
 
 There's actually not much left to do, we just want to push the field definition of our "execute" method onto the _fields_ array. We got a little off track though and still need to load our template string.
 
@@ -174,8 +174,8 @@ Yes, it's an expression, written _Expr_ in haxe. Checking its definition, you wi
 
 _ExprDef_ is the heart of everything, an enumeration that exhaustively describes haxe syntax. Take a good, long look at it: http://haxe.org/api/haxe/macro/exprdef Understanding this is essential for most macros. Read through it and think about how each construct translates back to source code.
 
-Study it until you can write the _getString_ method that is used above. It takes an _Expr_ as argument and returns a String if the expression actually is a String. In all other cases, you can make it return a _Context.error_. I will not give away the solution here.
+Study it until you can write the _getString_ method that is used above. It takes an _Expr_ as argument and returns a String if the expression actually is a String. In all other cases, you can make it return a _Context.error_. I will not give away the solution here, but the function will probably start with a _switch(e.expr)_ if _e_ is the name of the argument.
 
 == Wrapping up ==
 
-After we obtained the _fileName_ String, we only need to load the file through normal neko functions. Remember, we are inside the neko environment and can use most neko functions here. Isn't that cool? This also concludes the first part of our macro's task. We now have a String version of our template in the _tpl_ variable inside our _build_ function and can work from there. The next task is to create the _execute_ field with the proper logic behind it.
+After we obtained the _fileName_ string, we only need to load the file through normal neko functions. Remember, we are inside the neko environment and can use most neko functions here. Isn't that cool? This also concludes the first part of our macro's task. We now have a String version of our template in the _tpl_ variable inside our _build_ function and can work from there. The next task is to create the _execute_ field with the proper logic behind it.
