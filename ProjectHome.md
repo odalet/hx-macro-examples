@@ -1,0 +1,1 @@
+This project will contain a selection of macro snippets with explanations. It is geared towards short macro programs that perform specific tasks, like compile time templates.
